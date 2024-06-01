@@ -1,5 +1,6 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
+
 const clients = new Map(); // has to be a Map instead of {} due to non-string keys
 const wss = new WebSocketServer({ port: 8080 }); // initiate a new server that listens on port 8080
 
@@ -13,7 +14,18 @@ wss.on('connection', (ws) => {
     // send a message to all connected clients upon receiving a message from one of the connected clients
     ws.on('message', (data) => {
         console.log(`received: ${data}`);
-        serverBroadcast(`Client ${clients.get(ws)} ${data}`);
+        try {
+            //we are sending json array
+            const json = JSON.parse(data);
+            
+            
+            // Process the received data
+            // (You can add any logic here to handle the received data)
+        } catch (error) {
+            console.error('Failed to parse JSON:', error);
+        }
+
+        serverBroadcast(`Client ${clients.get(ws)}: ${data}`);
     });
 
     // stop tracking the client upon that client closing the connection
