@@ -1,5 +1,5 @@
 import WebSocket, { WebSocketServer } from 'ws';
-import { randomUUID } from 'crypto';
+import { v4 as uuidv4 } from 'uuid'; // import the v4 method from the uuid library
 
 const clients = new Map(); // has to be a Map instead of {} due to non-string keys
 const wss = new WebSocketServer({ port: 8080 }); // initiate a new server that listens on port 8080
@@ -7,7 +7,7 @@ const wss = new WebSocketServer({ port: 8080 }); // initiate a new server that l
 // set up event handlers and do other things upon a client connecting to the server
 wss.on('connection', (ws) => {
     // create an id to track the client
-    const id = randomUUID();
+    const id = uuidv4();
     clients.set(ws, id);
     console.log(`new connection assigned id: ${id}`);
 
